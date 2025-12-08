@@ -21,7 +21,7 @@ public class Key_Card_Machine : MonoBehaviour
         if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {
             // If we are looking at the machine
-            if (hit.collider.CompareTag("Selectable"))
+            if (hit.collider.CompareTag("KeyCardMachine"))
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
