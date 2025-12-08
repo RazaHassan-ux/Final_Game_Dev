@@ -2,29 +2,41 @@ using UnityEngine;
 
 public class Key_Card_Machine : MonoBehaviour
 {
-    public Sliding_door_script door; // drag your door here in inspector
+    public float interactDistance = 3f;
+    public Camera cam; // drag your player camera
+    public LayerMask interactLayer; // layer for machines
 
-    private void OnTriggerStay(Collider other)
+    private Player_Inventory inv;
+
+    private void Start()
     {
-        if (other.CompareTag("Player"))
+        inv = GetComponent<Player_Inventory>();
+    }
+
+    private void Update()
+    {
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            // If we are looking at the machine
+            if (hit.collider.CompareTag("Selectable"))
             {
-                Player_Inventory inv = other.GetComponent<Player_Inventory>();
-
-                if (inv.hasKeycard)
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    // Unlock the door
-                    door.open = true;
+                    Sliding_door_script door = hit.collider.GetComponent<KeycardMachineReference>().door;
 
-                    // Optional: remove card after use
-                    inv.hasKeycard = false;
-
-                    Debug.Log("Door unlocked!");
-                }
-                else
-                {
-                    Debug.Log("You need a keycard!");
+                    if (inv.hasKeycard)
+                    {
+                        door.open = true;
+                        inv.hasKeycard = false;
+                        Debug.Log("Door unlocked (Raycast Machine)!");
+                    }
+                    else
+                    {
+                        Debug.Log("You need a keycard!");
+                    }
                 }
             }
         }

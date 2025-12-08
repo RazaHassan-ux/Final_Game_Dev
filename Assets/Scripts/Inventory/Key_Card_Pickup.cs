@@ -2,15 +2,32 @@ using UnityEngine;
 
 public class Key_Card_Pickup : MonoBehaviour
 {
-    private void OnTriggerStay(Collider other)
+    public float pickupDistance = 3f;
+    public Camera cam; // drag your player camera
+    public LayerMask interactLayer; // set to Interactable layer
+
+    private Player_Inventory inv;
+
+    private void Start()
     {
-        if (other.CompareTag("Player"))
+        inv = GetComponent<Player_Inventory>();
+    }
+
+    private void Update()
+    {
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, pickupDistance, interactLayer))
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (hit.collider.CompareTag("Selectable"))
             {
-                other.GetComponent<Player_Inventory>().hasKeycard = true;
-                Destroy(gameObject); // remove keycard
-                Debug.Log("Picked Keycard");
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    inv.hasKeycard = true;
+                    Destroy(hit.collider.gameObject);
+                    Debug.Log("Picked Keycard (Raycast)");
+                }
             }
         }
     }
