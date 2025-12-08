@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SimpleHighlight : MonoBehaviour
+public class Highlight : MonoBehaviour
 {
     public float maxDistance = 8f;
 
