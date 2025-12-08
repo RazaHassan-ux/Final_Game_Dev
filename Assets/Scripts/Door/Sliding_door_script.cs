@@ -15,20 +15,12 @@ public class Sliding_door_script : MonoBehaviour
 
     [Header("Settings")]
     public float speed = 3f;
-    public float openRadius = 5f;
 
-    [Header("Player")]
-    public Transform player;
-
-    private bool open;
+    [HideInInspector]
+    public bool open = false;  // controlled by machine
 
     private void Update()
     {
-        if (player == null) return;
-
-        float dist = Vector3.Distance(transform.position, player.position);
-        open = dist <= openRadius;
-
         if (open)
         {
             leftDoor.localPosition = Vector3.Lerp(leftDoor.localPosition, leftOpenPos, Time.deltaTime * speed);
@@ -39,11 +31,5 @@ public class Sliding_door_script : MonoBehaviour
             leftDoor.localPosition = Vector3.Lerp(leftDoor.localPosition, leftClosedPos, Time.deltaTime * speed);
             rightDoor.localPosition = Vector3.Lerp(rightDoor.localPosition, rightClosedPos, Time.deltaTime * speed);
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, openRadius);
     }
 }
