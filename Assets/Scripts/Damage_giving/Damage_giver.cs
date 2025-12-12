@@ -1,27 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+using Ilumisoft.HealthSystem;
 using UnityEngine;
 
 public class Damage_giver : MonoBehaviour
 {
-    float damage_amount = 10f;
-    private Player_Health health;
+    public float damageAmount = 10f;
 
-    private void Start()
-    {
-        health = GetComponent<Player_Health>();
-
-        if (health == null)
-        {
-            Debug.Log("No Health component found on this!");
-        }
-    }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Player_Health>(out Player_Health otherhealth))
+        // Check if the collided object has a Health component
+        if (collision.gameObject.TryGetComponent<Health>(out Health health))
         {
-            otherhealth.take_damage(damage_amount);
+            health.ApplyDamage(damageAmount);
+            Debug.Log("Collision detected");
         }
     }
-
 }
