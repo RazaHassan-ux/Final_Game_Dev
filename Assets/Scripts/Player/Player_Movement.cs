@@ -82,7 +82,7 @@ public class Player_Movement : MonoBehaviour
             moveDir *= airControl;
 
         // Handle slope before moving
-        HandleSlope();
+        //HandleSlope();
 
         // Combine horizontal movement with vertical velocity
         Vector3 finalMove = moveDir + new Vector3(0, velocity.y, 0);
