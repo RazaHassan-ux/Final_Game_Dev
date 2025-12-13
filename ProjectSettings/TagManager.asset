@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Selectable
   - KeyCardMachine
+  - Damage
   layers:
   - Default
   - TransparentFX
