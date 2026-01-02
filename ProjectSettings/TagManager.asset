@@ -9,6 +9,7 @@ TagManager:
   - Selectable
   - KeyCardMachine
   - Damage
+  - Target
   layers:
   - Default
   - TransparentFX
