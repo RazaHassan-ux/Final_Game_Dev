@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapen : MonoBehaviour
 {
     public GameObject bulletPrefab;        // Bullet prefab
     public Transform bulletSpawn;          // Where bullet spawns from
