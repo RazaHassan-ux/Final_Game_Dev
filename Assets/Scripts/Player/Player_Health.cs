@@ -34,5 +34,15 @@ public class Player_Health : MonoBehaviour
     void UpdateHealthBar()
     {
         healthFill.fillAmount = currentHealth / maxHealth;
+        Debug.Log("Health player : " + currentHealth);
     }
+    public void ChangeHealth(float amount)
+    {
+        // Weapon.cs sends NEGATIVE damage
+        if (amount < 0)
+        {
+            TakeDamage(-amount);
+        }
+    }
+
 }

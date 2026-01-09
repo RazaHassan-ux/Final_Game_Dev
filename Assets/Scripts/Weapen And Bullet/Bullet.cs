@@ -2,30 +2,20 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float damage = 10f;        // bullet damage
-    public bool isFromTurret = false; // true = turret bullet, false = player bullet
+    public float damage = 10f;
+    public bool isFromTurret = false;
 
     void OnCollisionEnter(Collision collision)
     {
-        // If bullet is from turret, damage the player
-        if (isFromTurret && collision.gameObject.CompareTag("Player"))
+        if (isFromTurret)
         {
-            Player_Health playerHealth = collision.gameObject.GetComponent<Player_Health>();
-            if (playerHealth != null)
+            Player_Health ph = collision.gameObject.GetComponent<Player_Health>();
+            if (ph != null)
             {
-                playerHealth.TakeDamage(damage);
-            }
-        }
-        // If bullet is from player, damage the turret
-        else if (!isFromTurret && collision.gameObject.CompareTag("Enemy"))
-        {
-            Turret turret = collision.gameObject.GetComponent<Turret>();
-            if (turret != null)
-            {
-                turret.TakeDamage(damage);
+                ph.TakeDamage(damage);
             }
         }
 
-        Destroy(gameObject); // destroy bullet after hit
+        Destroy(gameObject);
     }
 }
