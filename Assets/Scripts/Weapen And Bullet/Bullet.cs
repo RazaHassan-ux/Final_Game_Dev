@@ -2,11 +2,18 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    public float damage = 10f;
+    public bool isFromTurret = false;
+
+    void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Target"))
+        if (isFromTurret)
         {
-            Debug.Log(collision.gameObject.name);
+            Player_Health ph = collision.gameObject.GetComponent<Player_Health>();
+            if (ph != null)
+            {
+                ph.TakeDamage(damage);
+            }
         }
 
         Destroy(gameObject);
