@@ -4,6 +4,8 @@ public class PauseManager : MonoBehaviour
 {
     public GameObject pauseMenuPanel;
     public GameObject optionsPanel;
+    public GameObject Canvas;
+
 
     bool isPaused = false;
 
@@ -24,6 +26,7 @@ public class PauseManager : MonoBehaviour
 
     public void PauseGame()
     {
+        Canvas.SetActive(true);
         pauseMenuPanel.SetActive(true);
         optionsPanel.SetActive(false);
         Time.timeScale = 0f;
@@ -32,6 +35,7 @@ public class PauseManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        Canvas.SetActive(false);
         pauseMenuPanel.SetActive(false);
         optionsPanel.SetActive(false);
         Time.timeScale = 1f;
@@ -48,6 +52,5 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         Application.Quit();
-        Debug.Log("Game Closed");
     }
 }
