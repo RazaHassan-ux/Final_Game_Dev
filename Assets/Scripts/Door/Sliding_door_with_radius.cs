@@ -19,11 +19,14 @@ public class Sliding_door_with_radius : MonoBehaviour
     [Header("Player")]
     public Transform player;
 
+    private bool isUnlocked = false; 
     private bool open;
 
     private void Update()
     {
-        if (player == null) return;
+        
+        if (!isUnlocked || player == null)
+            return;
 
         float dist = Vector3.Distance(transform.position, player.position);
         open = dist <= openRadius;
@@ -38,6 +41,12 @@ public class Sliding_door_with_radius : MonoBehaviour
             leftDoor.localPosition = Vector3.Lerp(leftDoor.localPosition, leftClosedPos, Time.deltaTime * speed);
             rightDoor.localPosition = Vector3.Lerp(rightDoor.localPosition, rightClosedPos, Time.deltaTime * speed);
         }
+    }
+
+    
+    public void UnlockDoor()
+    {
+        isUnlocked = true;
     }
 
     private void OnDrawGizmosSelected()

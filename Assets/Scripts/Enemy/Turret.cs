@@ -100,9 +100,10 @@ public class Turret : MonoBehaviour
 
     void Die()
     {
-        // Optional: add explosion effect here
+
         Destroy(gameObject);
     }
+
 
     public void ChangeHealth(float amount)
     {
