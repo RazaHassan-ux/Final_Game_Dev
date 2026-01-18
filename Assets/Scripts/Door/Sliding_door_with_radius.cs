@@ -17,12 +17,18 @@ public class Sliding_door_with_radius : MonoBehaviour
     [Header("Player")]
     public Transform player;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip openSound;
+    public AudioClip closeSound;
+
     private Vector3 leftClosedPos;
     private Vector3 rightClosedPos;
     private Vector3 leftOpenPos;
     private Vector3 rightOpenPos;
 
     private bool isUnlocked = true; // SET TRUE FOR TESTING
+    private bool isOpen = false;
 
     void Start()
     {
@@ -39,23 +45,48 @@ public class Sliding_door_with_radius : MonoBehaviour
             return;
 
         float dist = Vector3.Distance(transform.position, player.position);
-        bool open = dist <= openRadius;
+        bool shouldOpen = dist <= openRadius;
 
-        if (open)
+        // ---------- SOUND LOGIC ----------
+        if (shouldOpen && !isOpen)
+        {
+            if (openSound != null && audioSource != null)
+                audioSource.PlayOneShot(openSound);
+
+            isOpen = true;
+        }
+        else if (!shouldOpen && isOpen)
+        {
+            if (closeSound != null && audioSource != null)
+                audioSource.PlayOneShot(closeSound);
+
+            isOpen = false;
+        }
+
+        // ---------- MOVEMENT LOGIC ----------
+        if (shouldOpen)
         {
             leftDoor.localPosition = Vector3.MoveTowards(
-                leftDoor.localPosition, leftOpenPos, speed * Time.deltaTime);
+                leftDoor.localPosition,
+                leftOpenPos,
+                speed * Time.deltaTime);
 
             rightDoor.localPosition = Vector3.MoveTowards(
-                rightDoor.localPosition, rightOpenPos, speed * Time.deltaTime);
+                rightDoor.localPosition,
+                rightOpenPos,
+                speed * Time.deltaTime);
         }
         else
         {
             leftDoor.localPosition = Vector3.MoveTowards(
-                leftDoor.localPosition, leftClosedPos, speed * Time.deltaTime);
+                leftDoor.localPosition,
+                leftClosedPos,
+                speed * Time.deltaTime);
 
             rightDoor.localPosition = Vector3.MoveTowards(
-                rightDoor.localPosition, rightClosedPos, speed * Time.deltaTime);
+                rightDoor.localPosition,
+                rightClosedPos,
+                speed * Time.deltaTime);
         }
     }
 
