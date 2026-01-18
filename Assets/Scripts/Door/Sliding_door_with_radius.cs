@@ -6,11 +6,9 @@ public class Sliding_door_with_radius : MonoBehaviour
     public Transform leftDoor;
     public Transform rightDoor;
 
-    [Header("Positions")]
-    public Vector3 leftClosedPos;
-    public Vector3 leftOpenPos;
-    public Vector3 rightClosedPos;
-    public Vector3 rightOpenPos;
+    [Header("Open Offsets (Local)")]
+    public Vector3 leftOpenOffset = new Vector3(-1.5f, 0, 0);
+    public Vector3 rightOpenOffset = new Vector3(1.5f, 0, 0);
 
     [Header("Settings")]
     public float speed = 3f;
@@ -19,37 +17,54 @@ public class Sliding_door_with_radius : MonoBehaviour
     [Header("Player")]
     public Transform player;
 
-    private bool isUnlocked = false; 
-    private bool open;
+    private Vector3 leftClosedPos;
+    private Vector3 rightClosedPos;
+    private Vector3 leftOpenPos;
+    private Vector3 rightOpenPos;
 
-    private void Update()
+    private bool isUnlocked = true; // SET TRUE FOR TESTING
+
+    void Start()
     {
-        
+        leftClosedPos = leftDoor.localPosition;
+        rightClosedPos = rightDoor.localPosition;
+
+        leftOpenPos = leftClosedPos + leftOpenOffset;
+        rightOpenPos = rightClosedPos + rightOpenOffset;
+    }
+
+    void Update()
+    {
         if (!isUnlocked || player == null)
             return;
 
         float dist = Vector3.Distance(transform.position, player.position);
-        open = dist <= openRadius;
+        bool open = dist <= openRadius;
 
         if (open)
         {
-            leftDoor.localPosition = Vector3.Lerp(leftDoor.localPosition, leftOpenPos, Time.deltaTime * speed);
-            rightDoor.localPosition = Vector3.Lerp(rightDoor.localPosition, rightOpenPos, Time.deltaTime * speed);
+            leftDoor.localPosition = Vector3.MoveTowards(
+                leftDoor.localPosition, leftOpenPos, speed * Time.deltaTime);
+
+            rightDoor.localPosition = Vector3.MoveTowards(
+                rightDoor.localPosition, rightOpenPos, speed * Time.deltaTime);
         }
         else
         {
-            leftDoor.localPosition = Vector3.Lerp(leftDoor.localPosition, leftClosedPos, Time.deltaTime * speed);
-            rightDoor.localPosition = Vector3.Lerp(rightDoor.localPosition, rightClosedPos, Time.deltaTime * speed);
+            leftDoor.localPosition = Vector3.MoveTowards(
+                leftDoor.localPosition, leftClosedPos, speed * Time.deltaTime);
+
+            rightDoor.localPosition = Vector3.MoveTowards(
+                rightDoor.localPosition, rightClosedPos, speed * Time.deltaTime);
         }
     }
 
-    
     public void UnlockDoor()
     {
         isUnlocked = true;
     }
 
-    private void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, openRadius);
