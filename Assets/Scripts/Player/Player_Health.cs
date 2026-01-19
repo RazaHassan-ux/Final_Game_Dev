@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // Needed for scene loading
 
 public class Player_Health : MonoBehaviour
 {
     public float maxHealth = 100f;
     private float currentHealth;
 
-    public Image healthFill;  
+    public Image healthFill;
 
     void Start()
     {
@@ -22,12 +23,14 @@ public class Player_Health : MonoBehaviour
             currentHealth = 0;
 
         UpdateHealthBar();
+        Die(); // Check if player should die
     }
 
     public void heal(float heal_amount)
     {
         currentHealth += heal_amount;
-        if (currentHealth > 100) currentHealth = 100;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
         UpdateHealthBar();
     }
 
@@ -36,4 +39,12 @@ public class Player_Health : MonoBehaviour
         healthFill.fillAmount = currentHealth / maxHealth;
     }
 
+    void Die()
+    {
+        if (currentHealth <= 0)
+        {
+            // Load Scene 3
+            SceneManager.LoadScene(3);
+        }
+    }
 }

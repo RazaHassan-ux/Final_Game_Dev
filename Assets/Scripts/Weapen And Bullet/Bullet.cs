@@ -3,19 +3,21 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float damage = 10f;
-    public bool isFromTurret = false;
+    public bool isFromTurret;
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (isFromTurret)
+        // Hit Player
+        if (isFromTurret && collision.collider.CompareTag("Player"))
         {
-            Player_Health ph = collision.gameObject.GetComponent<Player_Health>();
-            if (ph != null)
+            Player_Health health = collision.collider.GetComponent<Player_Health>();
+            if (health != null)
             {
-                ph.TakeDamage(damage);
+                health.TakeDamage(damage);
             }
         }
 
+        // Destroy bullet on ANY hit
         Destroy(gameObject);
     }
 }
